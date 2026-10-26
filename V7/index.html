@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap QA Engineer – Ricardo v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">// roadmap QA Engineer · Ricardo Peres · Out 2026</div>
+  <h1>QA <span>Engineer</span> <br>Roadmap</h1>
+  <div class="header-sub">Bootcamp e PAC concluídos · Procura ativa do primeiro emprego QA · Manual → Automação (Playwright)</div>
+</header>
+
+<nav aria-label="Secções do roadmap">
+  <button type="button" class="active" data-tab="dashboard" onclick="showTab('dashboard')">🏠 Dashboard</button>
+  <button type="button" data-tab="bootcamp" onclick="showTab('bootcamp')">📚 Bootcamp</button>
+  <button type="button" data-tab="timeline" onclick="showTab('timeline')">🗺 Career Timeline</button>
+  <button type="button" data-tab="tracker" onclick="showTab('tracker')">✅ Career Tracker</button>
+  <button type="button" data-tab="skills" onclick="showTab('skills')">📊 Skills Matrix</button>
+  <button type="button" data-tab="certs" onclick="showTab('certs')">🏅 Certifications</button>
+  <button type="button" data-tab="practice" onclick="showTab('practice')">🌐 Learning Hub</button>
+  <button type="button" data-tab="pac-jobs" onclick="showTab('pac-jobs')">💼 PAC & Job Search</button>
+</nav>
+<main>
+
+<!-- ========================================================= -->
+<!-- DASHBOARD -->
+<!-- ========================================================= -->
+<div class="tab-content active" id="tab-dashboard">
+    <div class="sec">Dashboard</div>
+
+    <div class="dashboard-grid">
+
+        <!-- CURRENT STAGE -->
+        <div class="dash-card dash-stage">
+            <div class="dash-card-label">Fase Atual</div>
+            <div class="stage-badge stage-now">
+                <span class="stage-dot"></span>
+                Procura Ativa · Primeiro Emprego QA
+            </div>
+            <div class="dash-card-sub">Bootcamp TripleTen concluído (Ago 2026) · PAC concluído (Out 2026) → candidaturas e entrevistas em curso</div>
+            <div class="dash-stage-actions">
+                <a class="cert-link-btn" href="https://docs.google.com/spreadsheets/d/1CPKxxleHZq8KAqDd3qOivWGPxBGi1W4qZQZhaKneHo4/edit?usp=sharing" target="_blank" rel="noopener">📊 Tracker de candidaturas ↗</a>
+                <button type="button" class="cert-link-btn" onclick="showTab('certs')">🗓 Plano de formação</button>
+            </div>
+        </div>
+
+        <!-- PROGRESS (hybrid: auto from tracker, manual override possible) -->
+        <div class="dash-card dash-progress">
+            <div class="dash-card-label">Progresso</div>
+
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-track dash-progress-track" id="dash-progress-track"
+                     role="slider" tabindex="0" aria-label="Progresso geral (arrasta ou clica para ajustar manualmente)"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill" id="dash-progress-fill"></div>
+                    <div class="progress-bar-handle" id="dash-progress-handle"></div>
+                </div>
+            </div>
+
+            <div class="dash-progress-meta">
+                <span class="progress-label" id="dash-progress-label">0 / 21 concluídos (0%)</span>
+                <span class="progress-mode mode-auto" id="dash-progress-mode">Automático</span>
+            </div>
+
+            <button type="button" class="dash-progress-reset" id="dash-progress-reset" onclick="resetDashboardProgress()">↺ voltar ao automático</button>
+        </div>
+
+        <!-- PRIORITIES (auto, from Career Tracker) -->
+        <div class="dash-card dash-priorities">
+            <div class="dash-card-label">Prioridades</div>
+            <div id="dash-priorities-root"></div>
+        </div>
+
+        <!-- CURRENT FOCUS -->
+        <div class="dash-card dash-focus">
+            <div class="dash-card-label">Foco Atual</div>
+            <ul class="focus-list">
+                <li>Candidaturas e entrevistas QA</li>
+                <li>ISTQB CTFL · exame em dezembro</li>
+                <li>Python · CS50P</li>
+                <li>Playwright · TAU</li>
+                <li>Networking e LinkedIn</li>
+            </ul>
+        </div>
+
+        <!-- THIS MONTH (auto, from Certifications timeline) -->
+        <div class="dash-card dash-month">
+            <div class="dash-card-label">Este Mês</div>
+            <div id="dash-month-root"></div>
+        </div>
+
+        <!-- NEXT MILESTONE (auto) -->
+        <div class="dash-card dash-milestone">
+            <div class="dash-card-label">Próximo Marco</div>
+            <div id="dash-milestone-root"></div>
+        </div>
+
+        <!-- CERTIFICATIONS (auto) -->
+        <div class="dash-card dash-certs">
+            <div class="dash-card-label">Certificações</div>
+            <div id="dash-certs-root"></div>
+        </div>
+
+        <!-- ULTIMATE GOAL -->
+        <div class="dash-card dash-goal-ultimate">
+            <div class="dash-card-label">Objetivo Final</div>
+            <div class="goal-card goal-ultimate">
+                <strong>🤖 QA Automation Engineer</strong>
+                <p>QA Manual sólido + Automação com Playwright + CI/CD</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- TAB : BOOTCAMP -->
+<!-- ========================================================= -->
+<div class="tab-content" id="tab-bootcamp">
+    <div class="sec">TripleTen QA Bootcamp</div>
+
+    <div class="note">
+        <strong> O objetivo desta página </strong>
+        <br>
+        Esta secção documenta toda a evolução do bootcamp TripleTen. Cada Sprint contém aquilo que foi aprendido, o projeto realizado e os materiais produzidos. Esta página funciona como documentação técnica da minha aprendizagem ao longo do programa.
+    </div>
+
+    <div class="sec">Conteúdo dos Sprints</div>
+
+  <!-- ===== SPRINT 1 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S1</div>
+      <div class="sprint-name">Introdução à Análise de QA</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que aprendeste — Capítulos do Sprint</div>
+
+      <div class="prac-title is-done">01 · Introdução à Engenharia de QA</div>
+      <div class="pills">
+        <span class="pill pill-g">O que é análise de QA</span>
+        <span class="pill pill-g">O que são testes de software</span>
+        <span class="pill pill-g">Hard skills de um QA Analyst</span>
+        <span class="pill pill-g">Soft skills de um QA Analyst</span>
+        <span class="pill pill-g">Trajectória profissional de um QA</span>
+      </div>
+
+      <div class="prac-title is-done">02 · Desenvolvimento e Teste (SDLC)</div>
+      <div class="pills">
+        <span class="pill pill-g">Aplicativo: da ideia à remoção</span>
+        <span class="pill pill-g">Etapas de desenvolvimento — testar uma tarefa</span>
+        <span class="pill pill-g">Teste de lançamento</span>
+      </div>
+
+      <div class="prac-title is-done">03 · Checklists</div>
+      <div class="pills">
+        <span class="pill pill-g">O que é uma checklist</span>
+        <span class="pill pill-g">Criar o teu primeiro checklist</span>
+        <span class="pill pill-g">O que são bugs</span>
+        <span class="pill pill-g">Como criar um checklist de teste</span>
+      </div>
+
+      <div class="prac-title is-done">04 · Relatórios de Bugs (8 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Estrutura de um bug report</span>
+        <span class="pill pill-g">Títulos de bug reports</span>
+        <span class="pill pill-g">Etapas para reproduzir um bug</span>
+        <span class="pill pill-g">Prioridade e Severidade</span>
+        <span class="pill pill-g">Configuração do sistema</span>
+        <span class="pill pill-g">Capturas de tela e screencasts</span>
+      </div>
+
+      <div class="prac-title is-done">05 · Casos de Teste (8 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Estrutura de um caso de teste</span>
+        <span class="pill pill-g">Escrever casos de teste</span>
+        <span class="pill pill-g">Casos de teste positivos e negativos</span>
+      </div>
+
+      <div class="sec">Projecto do Sprint</div>
+      <div class="prac-item is-done">
+        <strong>📋 Google Sheets — Test Cases + Bug Reports</strong>
+        <div class="sub">Aba 1: Casos de Teste (ID, Título, Pré-condição, Passos, Resultado Esperado, Resultado Actual, Status) · Aba 2: Bug Reports (ID, Título, Severidade, Prioridade, Ambiente, Passos, Screenshots)</div>
+      </div>
+
+      <div class="sec">Para o GitHub (tripleten-qa-projects/sprint-1/)</div>
+      <div class="prac-item">
+        <strong>README.md — descreve o projecto</strong>
+        <div class="sub">O que foi testado · Ferramentas usadas · Nº de test cases criados · Nº de bugs encontrados · Menciona: "Aprovado por revisores da TripleTen"</div>
+      </div>
+      <div class="prac-item">
+        <strong>test-cases.md + bug-reports.md — tabelas Markdown</strong>
+        <div class="sub">Exporta cada aba do Sheets como CSV → tabletomarkdown.com → cola no ficheiro .md · O GitHub renderiza a tabela automaticamente</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 2 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S2</div>
+      <div class="sprint-name">Design de Testes</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que aprendeste — Capítulos do Sprint</div>
+
+      <div class="prac-title is-done">01 · Análise de Requisitos (8 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Introdução ao design de teste</span>
+        <span class="pill pill-g">Identificação de objectos de teste</span>
+        <span class="pill pill-g">Decomposição de requisitos</span>
+        <span class="pill pill-g">Visualização de requisitos</span>
+        <span class="pill pill-g">Áreas cinzentas e pesquisa de requisitos</span>
+        <span class="pill pill-g">Testes funcionais e não-funcionais</span>
+      </div>
+
+      <div class="prac-title is-done">02 · Projecto de Teste (12 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Design de casos de teste</span>
+        <span class="pill pill-g">Testes positivos e negativos</span>
+        <span class="pill pill-g">Particionamento em classes de equivalência</span>
+        <span class="pill pill-g">Como identificar classes de equivalência</span>
+        <span class="pill pill-g">Como escolher valores de teste</span>
+        <span class="pill pill-g">Valores-limite (Boundary Value Analysis)</span>
+        <span class="pill pill-g">Usar classes de equivalência e valores-limite juntos</span>
+        <span class="pill pill-g">Otimização de testes</span>
+        <span class="pill pill-g">Casos complicados</span>
+      </div>
+
+      <div class="prac-title is-done">03 · Documentação de Teste</div>
+      <div class="pills">
+        <span class="pill pill-g">Criar checklist a partir de um mapa mental</span>
+        <span class="pill pill-g">Usar classes de equivalência em casos de teste</span>
+        <span class="pill pill-g">Última actividade prática do Sprint 2</span>
+      </div>
+
+      <div class="sec">Projecto do Sprint</div>
+      <div class="prac-item is-done">
+        <strong>📋 Google Sheets — Classes de Equivalência + Test Cases</strong>
+        <div class="sub">Aba 1: Tabela de classes de equivalência (válidas e inválidas) por campo · Aba 2: Test Cases derivados das classes — cobrindo valores-limite e casos extremos</div>
+      </div>
+
+      <div class="sec">Para o GitHub (tripleten-qa-projects/sprint-2/)</div>
+      <div class="prac-item">
+        <strong>equivalence-classes.md</strong>
+        <div class="sub">Tabela: Campo | Classe Válida | Classe Inválida | Valores de Teste · Exporta do Sheets com tabletomarkdown.com · Menciona no README: técnicas usadas (EP + BVA)</div>
+      </div>
+      <div class="prac-item">
+        <strong>test-cases.md</strong>
+        <div class="sub">Test cases derivados das classes · Inclui tanto testes positivos como negativos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 3 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S3</div>
+      <div class="sprint-name">Teste de Aplicativos Web</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que aprendeste — Capítulos do Sprint</div>
+
+      <div class="prac-title is-done">01 · Como Funciona uma Aplicação Web (10 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Aplicativo web — arquitectura</span>
+        <span class="pill pill-g">URL — estrutura e componentes</span>
+        <span class="pill pill-g">Solicitações HTTP (requests)</span>
+        <span class="pill pill-g">Respostas HTTP (status codes)</span>
+        <span class="pill pill-g">Visualizar requests frontend e respostas backend</span>
+        <span class="pill pill-g">Cookies</span>
+        <span class="pill pill-g">Armazenamento local (Local Storage)</span>
+        <span class="pill pill-g">Cache em testes</span>
+      </div>
+
+      <div class="prac-title is-done">02 · Teste de Interface do Utilizador (8 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Elementos da interface — parte 1</span>
+        <span class="pill pill-g">Elementos da interface — parte 2</span>
+        <span class="pill pill-g">Figma — trabalhar com designs para QA</span>
+        <span class="pill pill-g">Formulários e teste de validação</span>
+        <span class="pill pill-g">Testes em textos para detectar erros</span>
+      </div>
+
+      <div class="prac-title is-done">03 · Teste entre Plataformas e Navegadores (6 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Testes multiplataforma</span>
+        <span class="pill pill-g">Como seleccionar sistemas operativos para testar</span>
+        <span class="pill pill-g">Testes entre navegadores (cross-browser)</span>
+        <span class="pill pill-g">Como seleccionar navegadores para testes</span>
+      </div>
+
+      <div class="prac-title is-done">04 · Teste de Design Web Responsivo (7 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Abordagem para layouts de aplicativos web</span>
+        <span class="pill pill-g">Testes de responsividade</span>
+        <span class="pill pill-g">DevTools — modo responsivo</span>
+      </div>
+
+      <div class="sec">Projecto do Sprint</div>
+      <div class="prac-item is-done">
+        <strong>📋 Google Sheets — Checklists + Test Cases + Jira</strong>
+        <div class="sub">2 abas com checklists de funcionalidades · 2 abas com test cases · Bug reports criados no Jira com links no Sheets · ✅ Já tens conta Jira desde este sprint</div>
+      </div>
+
+      <div class="sec">Para o GitHub (tripleten-qa-projects/sprint-3/)</div>
+      <div class="prac-item">
+        <strong>checklists.md — tabelas das 2 checklists</strong>
+        <div class="sub">Converte com tabletomarkdown.com · Formato: Funcionalidade | Item a verificar | Resultado | Observações</div>
+      </div>
+      <div class="prac-item">
+        <strong>test-cases.md — tabelas dos test cases</strong>
+        <div class="sub">Mesma conversão Sheets → Markdown</div>
+      </div>
+      <div class="prac-item">
+        <strong>bug-reports.md — tabela com links Jira</strong>
+        <div class="sub">Tabela: ID | Título | Severidade | Link Jira · Links em Markdown: [PROJ-1](https://...atlassian.net/browse/PROJ-1) · Empregadores ficam impressionados — mostras que usas ferramentas reais de indústria</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 4 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S4</div>
+      <div class="sprint-name">Teste de API</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que aprendeste — Capítulos do Sprint</div>
+
+      <div class="prac-title is-done">01 · Introdução à API (7 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Arquitectura do aplicativo</span>
+        <span class="pill pill-g">O que é uma API</span>
+        <span class="pill pill-g">Soluções de arquitectura REST</span>
+        <span class="pill pill-g">HTTP — estrutura de solicitação e resposta</span>
+        <span class="pill pill-g">JSON — leitura e escrita</span>
+      </div>
+
+      <div class="prac-title is-done">02 · Testes de API com Postman (12 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Postman — recursos básicos</span>
+        <span class="pill pill-g">Postman — testes de API</span>
+        <span class="pill pill-g">URL dinâmica no Postman</span>
+        <span class="pill pill-g">cURL e geração de solicitação do Postman para cURL</span>
+        <span class="pill pill-g">Banco de dados e API</span>
+        <span class="pill pill-g">Relatório de bugs para API</span>
+        <span class="pill pill-g">Logs na API</span>
+        <span class="pill pill-g">Documentação da API</span>
+        <span class="pill pill-g">Swagger</span>
+        <span class="pill pill-g">Apidoc</span>
+      </div>
+
+      <div class="prac-title is-done">03 · Design de Testes para API (8 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Testes positivos de API</span>
+        <span class="pill pill-g">Testes negativos de API</span>
+        <span class="pill pill-g">Classes de equivalência em API</span>
+        <span class="pill pill-g">Valores-limite em API</span>
+        <span class="pill pill-g">Validação de API</span>
+        <span class="pill pill-g">Checklist para testes de API</span>
+      </div>
+
+      <div class="sec">Projecto do Sprint — Aprovado ✅</div>
+      <div class="prac-item is-done">
+        <strong>Postman Collection + Test Cases + Bug Reports</strong>
+        <div class="sub">Collection com requests GET/POST/PUT/DELETE · Testes positivos e negativos · Bug reports no Jira para falhas de API · Checklist de cobertura</div>
+      </div>
+
+      <div class="sec">Para o GitHub (tripleten-qa-projects/sprint-4/)</div>
+      <div class="prac-item">
+        <strong>Exporta a Postman Collection (.json)</strong>
+        <div class="sub">No Postman → Collection → ··· → Export → Collection v2.1 → guarda como "sprint4-api.postman_collection.json" · Faz upload directo para o GitHub — fica visível e descarregável</div>
+      </div>
+      <div class="prac-item">
+        <strong>api-test-cases.md — o que testaste</strong>
+        <div class="sub">Tabela: Endpoint | Método | Caso de Teste | Dados de Entrada | Resultado Esperado | Resultado Real | Status · Inclui os testes negativos (401, 404, 422) — mostram maturidade técnica</div>
+      </div>
+      <div class="prac-item">
+        <strong>README.md do sprint</strong>
+        <div class="sub">URL base da API · Endpoints cobertos · Como importar a collection no Postman · Resultado resumido (X casos passados, Y falhados) · Menciona: Swagger/Apidoc usado para explorar a API</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 5 ===== -->
+  <div class="sprint-card">
+     <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S5</div>
+      <div class="sprint-name">Tipos de Aplicativos Móveis</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que vais aprender</div>
+      <div class="pills">
+        <span class="pill pill-g">Tipos de apps móveis (nativa, web, híbrida)</span>
+        <span class="pill pill-g">Sistemas operativos e versões Android/iOS</span>
+        <span class="pill pill-g">Parâmetros de dispositivos</span>
+        <span class="pill pill-g">Matrizes de dispositivos</span>
+        <span class="pill pill-g">Android Studio — instalação e configuração</span>
+        <span class="pill pill-g">Criar dispositivo virtual (AVD)</span>
+        <span class="pill pill-g">Logs no Android Studio e emulador</span>
+        <span class="pill pill-g">Teste no emulador (Android)</span>
+        <span class="pill pill-g">Teste em dispositivo real</span>
+        <span class="pill pill-g">Testes de geolocalização</span>
+        <span class="pill pill-g">Testes de performance mobile</span>
+        <span class="pill pill-g">Instalar APKs e gerar logs (ADB)</span>
+      </div>
+
+      <div class="sec">Projecto do Sprint (S5)</div>
+      <div class="prac-item is-done">
+        <strong>Projecto: Testes Mobile + Device Matrix</strong>
+        <div class="sub">Espera-se: device matrix com dispositivos/OS testados · test cases para funcionalidades mobile · bug reports com screenshots do emulador</div>
+      </div>
+
+      <div class="sec">Para o GitHub (tripleten-qa-projects/sprint-5/)</div>
+      <div class="prac-item">
+        <strong>device-matrix.md</strong>
+        <div class="sub">Tabela: Dispositivo | OS | Versão | Resolução | Resultado Geral · Faz esta tabela no Sheets e converte para Markdown</div>
+      </div>
+      <div class="prac-item">
+        <strong>test-cases-mobile.md + screenshots/</strong>
+        <div class="sub">Test cases específicos de mobile · Pasta screenshots/ com imagens do emulador · Bug reports com printscreens de bugs visuais encontrados</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 6 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S6</div>
+      <div class="sprint-name">Noções de Base de Dados</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que vais aprender</div>
+      <div class="pills">
+        <span class="pill pill-g">Linux / Console — introdução</span>
+        <span class="pill pill-g">Sistemas operativos e linha de comandos</span>
+        <span class="pill pill-g">SSH — conectar a servidor remoto</span>
+        <span class="pill pill-g">Navegar e gerir ficheiros (ls, cd, cp, mv)</span>
+        <span class="pill pill-g">Trabalhar com ficheiros de texto</span>
+        <span class="pill pill-g">Filtrar conteúdo (grep, cat, tail)</span>
+        <span class="pill pill-g">Introdução ao SQL</span>
+        <span class="pill pill-g">Bases de dados relacionais</span>
+        <span class="pill pill-g">SELECT, WHERE, ORDER BY</span>
+        <span class="pill pill-g">Funções de agregação (COUNT, SUM, AVG)</span>
+        <span class="pill pill-g">Conversão de tipos de dados</span>
+        <span class="pill pill-g">INSERT, UPDATE, DELETE</span>
+        <span class="pill pill-g">Relações entre tabelas</span>
+        <span class="pill pill-g">Diagramas ER</span>
+        <span class="pill pill-g">INNER JOIN, LEFT JOIN, RIGHT JOIN</span>
+        <span class="pill pill-g">Múltiplas tabelas (subqueries)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 7 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S7</div>
+      <div class="sprint-name">Introdução à Automação de Testes</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que vais aprender</div>
+      <div class="pills">
+        <span class="pill pill-g">O que é automação de testes</span>
+        <span class="pill pill-g">Quando automatizar (e quando não)</span>
+        <span class="pill pill-g">Python — variáveis, tipos de dados</span>
+        <span class="pill pill-g">Strings, números, booleanos</span>
+        <span class="pill pill-g">Listas, Tuplas, Dicionários</span>
+        <span class="pill pill-g">Condicionais (if/elif/else)</span>
+        <span class="pill pill-g">Ciclos (for, while)</span>
+        <span class="pill pill-g">Funções (def, parâmetros, return)</span>
+        <span class="pill pill-g">PyCharm IDE — instalação e uso</span>
+        <span class="pill pill-g">Git no PyCharm (clone, commit, push)</span>
+        <span class="pill pill-g">Pytest — escrita de testes básicos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 8 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S8</div>
+      <div class="sprint-name">Automação de Testes de Aplicativos Web</div>
+      <div class="sprint-date">7–27 Jul 2026</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que aprendeste — Capítulos do Sprint</div>
+
+      <div class="prac-title is-done">01 · Python: Classes e Objetos (7 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Organizar o teu código</span>
+        <span class="pill pill-g">Classes e objetos</span>
+        <span class="pill pill-g">Criar uma classe</span>
+        <span class="pill pill-g">Adicionar métodos a uma classe</span>
+        <span class="pill pill-g">Criar objetos a partir de classes</span>
+        <span class="pill pill-g">Usar objetos</span>
+        <span class="pill pill-g">Interações entre objetos</span>
+      </div>
+
+      <div class="prac-title is-done">02 · Localizar Elementos (6 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Localização de elementos para teste</span>
+        <span class="pill pill-g">O DOM e o HTML</span>
+        <span class="pill pill-g">Inspeção de elementos de uma página Web</span>
+        <span class="pill pill-g">Seletores CSS</span>
+        <span class="pill pill-g">XPath</span>
+        <span class="pill pill-g">Estratégia de localização</span>
+      </div>
+
+      <div class="prac-title is-done">03 · Usar o Selenium (9 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Visão geral do Selenium</span>
+        <span class="pill pill-g">Instalar o Selenium</span>
+        <span class="pill pill-g">Abrir e fechar páginas</span>
+        <span class="pill pill-g">Encontrar elementos</span>
+        <span class="pill pill-g">Clicar em elementos</span>
+        <span class="pill pill-g">Esperas</span>
+        <span class="pill pill-g">Testar campos de entrada</span>
+        <span class="pill pill-g">Verificar texto</span>
+      </div>
+
+      <div class="prac-title">04 · Modelo de Objeto de Página — POM (5 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">O que é o POM</span>
+        <span class="pill pill-g">Criação de ficheiro POM</span>
+        <span class="pill pill-g">Criação de ficheiro de teste usando POM</span>
+        <span class="pill pill-g">Combinar métodos em POM</span>
+        <span class="pill pill-g">Métodos setup_class() e teardown_class()</span>
+      </div>
+
+      <div class="prac-title">05 · Projeto (3 lições)</div>
+      <div class="pills">
+        <span class="pill pill-g">Projeto 8: Teste com Selenium</span>
+        <span class="pill pill-g">Nova conquista: Analista de QA em Automação</span>
+        <span class="pill pill-g">Feedback do Sprint 8</span>
+      </div>
+
+      <div class="note"><strong>Este é o sprint mais valorizado no mercado.</strong> Selenium + POM aparecem em quase todas as vagas de QA Automation em Portugal. Sprint concluído — todos os capítulos, incluindo POM e o projeto, foram feitos. O projecto deste sprint deve ser o teu showcase principal no GitHub.</div>
+    </div>
+  </div>
+
+  <!-- ===== SPRINT 9 ===== -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">S9</div>
+      <div class="sprint-name">Projecto Final</div>
+      <div class="sprint-date">28 Jul – 17 Ago 2026</div>
+      <div class="sprint-status s-done">DONE</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="sec">O que foi feito</div>
+      <div class="pills">
+        <span class="pill pill-g">Projecto integrado end-to-end</span>
+        <span class="pill pill-g">QA Manual + Automação combinados</span>
+        <span class="pill pill-g">Test plan completo</span>
+        <span class="pill pill-g">Test cases manuais + automatizados</span>
+        <span class="pill pill-g">Bug reports no Jira</span>
+        <span class="pill pill-g">Selenium + POM</span>
+        <span class="pill pill-g">Documentação profissional</span>
+        <span class="pill pill-g">Avaliação e aprovação TripleTen</span>
+      </div>
+
+      <div class="prac-title">Como maximizar este sprint</div>
+      <div class="prac-item">
+        <strong>Trata-o como entrega real para um cliente</strong>
+        <div class="sub">README com: contexto do projecto, o que foi testado, ferramentas, como correr os testes automáticos, métricas (X test cases, Y bugs, Z automatizados) · Escreve como se fosse um relatório para o teu manager</div>
+      </div>
+      <div class="prac-item">
+        <strong>Publica tudo no GitHub antes da avaliação</strong>
+        <div class="sub">Repositório organizado: /manual-tests, /automation, /bug-reports, /docs · Screenshots de bugs · Postman collection exportada · Código Selenium com POM · Este é o repositório que vais mostrar em entrevistas</div>
+      </div>
+      <div class="prac-item">
+        <strong>Prepara o "projecto pitch" de 2 minutos</strong>
+        <div class="sub">Consegues explicar: o que testaste, que técnicas usaste, um bug interessante que encontraste, uma decisão que tomaste? · Entrevistas técnicas pedem exactamente isto · Pratica em voz alta antes da aprovação</div>
+      </div>
+      <div class="prac-item is-done">
+        <strong>✅ Kit de empregabilidade já aprovado via CPC</strong>
+        <div class="sub">CV (PT + EN), GitHub README, cover letter modular e LinkedIn já estão polidos e aprovados no Career Prep Checkpoint da TripleTen · Mantém o CV/GitHub atualizados com o projeto final e com os projetos posteriores (PetClinic)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÓDULOS ADICIONAIS -->
+  <div class="sprint-card">
+    <div class="sprint-header" onclick="toggleSprint(this)">
+      <div class="sprint-num">+</div>
+      <div class="sprint-name">Material Adicional (Opcional mas Muito Valioso)</div>
+      <div class="sprint-date">Qualquer altura</div>
+      <div class="sprint-status s-done">OPCIONAL</div>
+      <div class="sprint-chevron">▼</div>
+    </div>
+    <div class="sprint-body">
+      <div class="pills">
+        <span class="pill">SDLC Waterfall / Agile aprofundado</span>
+        <span class="pill">Modelo Waterfall (Cascata)</span>
+        <span class="pill">Princípios Ágeis e Scrum</span>
+        <span class="pill">Smoke / Regression / Exploratory Testing</span>
+        <span class="pill">Caixas pretas / brancas / cinzentas</span>
+        <span class="pill">Componente, Integração, Sistema</span>
+        <span class="pill">Cenário e Teste Exploratório</span>
+        <span class="pill">Tour Technique (exploratório)</span>
+        <span class="pill">Soft skills — comunicação escrita</span>
+        <span class="pill">Como trabalhar com múltiplas tarefas</span>
+        <span class="pill">Como ser independente e proactivo</span>
+      </div>
+      <div class="note"><strong>Faz estes módulos antes das candidaturas.</strong> O módulo de Soft Skills é testado directamente nas entrevistas comportamentais (método STAR). O módulo de Exploratory Testing aparece em muitas vagas como requisito. O módulo de SDLC aprofundado vai solidificar respostas a perguntas como "descreve o processo de teste num sprint Agile".</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- CAREER TIMELINE -->
+<!-- ========================================================= -->
+<div class="tab-content" id="tab-timeline">
+<div class="sec">Career Timeline</div>
+<div class="note">As 7 fases da minha evolução profissional, do bootcamp TripleTen à especialização de longo prazo em QA Automation. As fases 4 a 7 seguem as prioridades do Career Tracker e a Timeline de Formação da aba Certifications, e correm em paralelo com a procura de emprego.</div>
+
+  <div class="phase-timeline">
+
+    <!-- FASE 1 — TRIPLETEN BOOTCAMP -->
+    <div class="phase-item phase-done">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 1</span>
+          <span class="phase-status status-done">✅ Concluída</span>
+        </div>
+        <h3 class="phase-title">TripleTen Bootcamp</h3>
+        <div class="phase-date">Fevereiro → Agosto 2026</div>
+        <p class="phase-desc">Bootcamp concluído com o projeto final aprovado (Sprint 9).</p>
+      </div>
+    </div>
+
+    <!-- FASE 2 — PAC -->
+    <div class="phase-item phase-done">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 2</span>
+          <span class="phase-status status-done">✅ Concluída</span>
+        </div>
+        <h3 class="phase-title">PAC — Career Acceleration Program</h3>
+        <div class="phase-date">Agosto → Outubro 2026</div>
+        <div class="phase-subtitle">Objetivos</div>
+        <ul class="phase-list">
+          <li>Entrevistas</li>
+          <li>Networking</li>
+          <li>Portfolio Final</li>
+          <li>Estratégia de candidaturas</li>
+          <li>Tarefas do PAC dadas pelos coaches</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 3 — PRIMEIRO EMPREGO -->
+    <div class="phase-item phase-milestone">
+      <div class="phase-marker"><span class="phase-marker-star">★</span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 3</span>
+          <span class="phase-status status-milestone">🎯 Em curso · Objetivo Principal</span>
+        </div>
+        <h3 class="phase-title">Primeiro Emprego</h3>
+        <div class="phase-date">Outubro 2026 → até conseguir</div>
+        <p class="phase-desc">Procura ativa da primeira posição como QA: candidaturas, entrevistas e portfolio atualizado (tracker na Google Sheets). Corre em paralelo com as fases de formação 4 a 6.</p>
+      </div>
+    </div>
+
+    <!-- FASE 4 — CONSOLIDAÇÃO -->
+    <div class="phase-item phase-next">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 4</span>
+          <span class="phase-status status-next">A seguir · Nov 2026</span>
+        </div>
+        <h3 class="phase-title">Consolidação</h3>
+        <div class="phase-date">Novembro 2026 → Janeiro 2027 · Prioridade 1</div>
+        <ul class="phase-list">
+          <li>ISTQB CTFL · exame em dezembro</li>
+          <li>Python · CS50P</li>
+          <li>Playwright · TAU</li>
+          <li>QA Manual, Agile, APIs e Git</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 5 — DIFERENCIAÇÃO -->
+    <div class="phase-item phase-future">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 5</span>
+          <span class="phase-status status-future">Futuro</span>
+        </div>
+        <h3 class="phase-title">Diferenciação</h3>
+        <div class="phase-date">Fevereiro → Maio 2027 · Prioridade 2</div>
+        <ul class="phase-list">
+          <li>Testes com Python e DevOps · TAU</li>
+          <li>Playwright avançado</li>
+          <li>Katalon Practitioner</li>
+          <li>JMeter · BlazeMeter</li>
+          <li>SQL e testes de segurança</li>
+          <li>Azure DevOps</li>
+          <li>GitHub Foundations (GH-900) · exame em maio</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 6 — ESPECIALIZAÇÃO -->
+    <div class="phase-item phase-future">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 6</span>
+          <span class="phase-status status-future">Futuro</span>
+        </div>
+        <h3 class="phase-title">Especialização</h3>
+        <div class="phase-date">Junho → Dezembro 2027 · Prioridade 3</div>
+        <ul class="phase-list">
+          <li>Jenkins e DevOps</li>
+          <li>GitHub Actions (GH-200)</li>
+          <li>Python avançado · freeCodeCamp</li>
+          <li>Azure Fundamentals (AZ-900) · opcional</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FASE 7 — LONGO PRAZO -->
+    <div class="phase-item phase-future">
+      <div class="phase-marker"><span class="phase-marker-dot"></span></div>
+      <div class="phase-card">
+        <div class="phase-head">
+          <span class="phase-num">FASE 7</span>
+          <span class="phase-status status-future">Longo Prazo</span>
+        </div>
+        <h3 class="phase-title">Longo Prazo</h3>
+        <div class="phase-date">2028 → · Prioridade 4</div>
+        <ul class="phase-list">
+          <li>JavaScript + Cypress</li>
+          <li>Java / C#</li>
+          <li>Mobile (Appium)</li>
+          <li>BDD (Cucumber / Gherkin)</li>
+          <li>Performance avançada (k6)</li>
+          <li>GitLab CI/CD</li>
+          <li>IA aplicada a QA</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB : CAREER TRACKER -->
+
+<div class="tab-content" id="tab-tracker">
+  <div class="sec">Career Tracker</div>
+  <div class="note">Organizado por prioridade de evolução — clica nas competências à medida que as fores dominando. O progresso fica guardado automaticamente no browser. Verde = competência dominada; a cor rosa indica a prioridade.</div>
+  <div id="career-tracker-root"></div>
+</div>
+
+<!-- ======== TAB: CERTIFICAÇÕES ======== -->
+<div class="tab-content" id="tab-certs">
+  <div class="sec">Certifications</div>
+  <div class="note">Plano de formação e certificações por prioridade (P1 → P3) e por mês, feito em pós-laboral e ao fim de semana. Preços Udemy em promoção (~12–14 €). Arrasta os cartões entre categorias para atualizar o estado.</div>
+  <div class="legend" aria-label="Legenda">
+    <span class="legend-group"><span class="legend-title">Estado</span>
+      <span class="badge badge--done">Concluído</span><span class="badge badge--active">Em curso</span><span class="badge badge--planned">Planeado</span><span class="badge badge--future">Futuro</span></span>
+    <span class="legend-group"><span class="legend-title">Prioridade</span>
+      <span class="prio-badge prio-1">P1</span><span class="prio-badge prio-2">P2</span><span class="prio-badge prio-3">P3</span><span class="prio-badge prio-4">P4</span></span>
+  </div>
+  <div class="sec">🗓 Timeline de Formação</div>
+  <div id="cert-timeline-root"></div>
+  <div class="sec">🏅 Por Estado</div>
+  <div id="certifications-root"></div>
+</div>
+
+<!-- ======== TAB: LEARNING HUB ======== -->
+<div class="tab-content" id="tab-practice">
+  <div class="sec">🌐 Learning Hub</div>
+  <div class="note">Organizado por objetivo — onde aprender, onde praticar cada área, e onde procurar emprego. Cada plataforma tem prioridade e objetivo, para saberes sempre porque estás lá.</div>
+  <div id="learning-hub-root"></div>
+</div>
+
+<!-- ======== TAB: PAC & JOB SEARCH ======== -->
+<div class="tab-content" id="tab-pac-jobs">
+  <div class="sec">💼 PAC & Job Search</div>
+  <div class="note">As candidaturas vivem na Google Sheets (Drive) — é lá que se regista tudo. Esta aba é só o atalho e o mapa dos marcos da procura de emprego.</div>
+
+  <div class="sec">📊 Tracker de Candidaturas</div>
+  <div class="cert-cards">
+    <div class="cert-card">
+      <div class="cert-card-top"><span class="cert-card-name">Tracker — Candidaturas de Emprego</span></div>
+      <div class="cert-card-meta">Google Sheets · Drive</div>
+      <div class="cert-card-hint">Registo de todas as candidaturas: data, empresa, cargo, estado, resposta e entrevistas. Também serve de comprovativo de procura ativa.</div>
+      <div class="cert-card-actions">
+        <a class="cert-link-btn" href="https://docs.google.com/spreadsheets/d/1CPKxxleHZq8KAqDd3qOivWGPxBGi1W4qZQZhaKneHo4/edit?usp=sharing" target="_blank" rel="noopener">📊 Abrir tracker ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">🧭 Marcos da Procura de Emprego</div>
+  <div class="cert-cards">
+    <div class="cert-card">
+      <div class="cert-card-top"><span class="cert-card-name">PAC — Career Acceleration Program</span><span class="cert-done-tag">✅ Concluído</span></div>
+      <div class="cert-card-meta">Fase 2 · Agosto → Outubro 2026</div>
+      <div class="cert-card-hint">Programa de aceleração de carreira da TripleTen: coaching, tarefas semanais, estratégia de candidaturas e preparação de entrevistas.</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-top"><span class="cert-card-name">Projeto Final & Portfolio</span><span class="cert-done-tag">✅ Concluído</span></div>
+      <div class="cert-card-meta">Fase 1–2 · 2026</div>
+      <div class="cert-card-hint">Projeto final do bootcamp e projeto PetClinic (automação com Playwright, Docker e GitHub Actions) como showcase para entrevistas.</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-top"><span class="cert-card-name">Candidaturas & Entrevistas</span><span class="pri-1">★★★ P1</span></div>
+      <div class="cert-card-meta">Fase 3 · Em curso</div>
+      <div class="cert-card-hint">Candidaturas regulares, registo no tracker, preparação de entrevistas técnicas e comportamentais (método STAR).</div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-card-top"><span class="cert-card-name">Primeiro Emprego QA</span><span class="pri-1">★★★ P1</span></div>
+      <div class="cert-card-meta">Fase 3 · Objetivo Principal</div>
+      <div class="cert-card-hint">Conseguir a primeira posição como QA e continuar a evoluir de Manual para Automação.</div>
+    </div>
+  </div>
+
+  <div class="sec">🤝 Suporte TripleTen</div>
+  <details class="disclosure">
+    <summary>Garantia, Career Acceleration e suporte pós-emprego</summary>
+    <div class="disclosure-body">  
+
+  <div class="note"><strong>Resumo da garantia:</strong> Devolução total da propina se não arranjares emprego em <strong>10 meses</strong> após concluir o programa. Para qualificar: completar Career Prep + Career Acceleration, candidatar-te activamente, e manter contacto com o career coach. Eles pedem ~10 candidaturas/semana e check-ins quinzenais. É uma rede de segurança real — mas funciona porque te obrigam a fazer o trabalho.</div>
+
+  <div class="support-card">
+    <strong>🎓 Durante o Bootcamp (concluído)</strong>
+    <div class="sub">Learning Coach disponível · AI assistant em cada sprint · Comunidade Discord · Revisores profissionais que avaliam os projectos · Tutores são QA engineers com empregos reais</div>
+  </div>
+  <div class="support-card">
+    <strong>📋 Career Prep (incluído no programa)</strong>
+    <div class="sub">Optimização de CV e LinkedIn · Mock interviews · GitHub review · Estratégia de job search · Cover letters · Começa no final do bootcamp</div>
+  </div>
+  <div class="support-card">
+    <strong>🚀 Career Acceleration (pós-bootcamp)</strong>
+    <div class="sub">Career coach dedicado · Quota semanal de candidaturas (tipicamente 10/semana) · Check-ins quinzenais de 30min · Relatórios semanais · Envio de CV a empresas da rede deles · Suporte até emprego ou 10 meses</div>
+  </div>
+  <div class="support-card">
+    <strong>🤝 Post-offer Support</strong>
+    <div class="sub">3 sessões de career coaching por ano após emprego · Se saíres do emprego e voltares ao mercado, retomam o suporte · Rede de alumni no LinkedIn</div>
+  </div>
+  <div class="support-card">
+    <strong>🔗 Externship (se disponível)</strong>
+    <div class="sub">Projecto real para empresa parceira · Experiência no CV como "trabalho real" · Diferenciador enorme · Pergunta ao teu coach se é disponível para o programa QA em Portugal</div>
+  </div>
+
+  <div class="sec">Dicas do bootcamp (arquivo)</div>
+  <div class="prac-item">
+    <strong>Mantém o GitHub activo durante o bootcamp</strong>
+    <div class="sub">Commits regulares mostram consistência · O career coach vai usar o teu GitHub como base para o CV</div>
+  </div>
+  <div class="prac-item">
+    <strong>LinkedIn: começa a optimizar JÁ</strong>
+    <div class="sub">Foto profissional · Headline: "QA Analyst | Manual & Automation Testing | TripleTen" · Adiciona sprints concluídos como "formação em curso" · Conecta com QA engineers portugueses</div>
+  </div>
+  <div class="prac-item">
+    <strong>Documenta candidaturas desde o início</strong>
+    <div class="sub">Cria uma spreadsheet: empresa, vaga, data, estado, feedback · Os relatórios semanais que a TripleTen pede ficam mais fáceis · E tens dados reais de mercado</div>
+  </div>
+  <div class="prac-item">
+    <strong>Candidata-te ANTES de terminar</strong>
+    <div class="sub">Alumni da TripleTen relatam ter emprego antes de concluir o Sprint 9 · Começa candidaturas em Agosto, assim que tiveres o Sprint 8 concluído</div>
+  </div>
+    </div>
+  </details>
+</div>
+
+<!-- TAB : SKILLS MATRIX -->
+
+<div class="tab-content" id="tab-skills">
+    <div class="sec">📊 Skills Matrix</div>
+ 
+    <div class="note">O nível de cada competência vem da percentagem de itens feitos no <strong>Career Tracker</strong>: menos de 25% Iniciante · 25% Básico · 50% Intermédio · 75% Avançado · 100% Domínio. A cor mostra o nível (vermelho até Básico, âmbar em Intermédio, verde a partir de Avançado) e o segmento a tracejado marca o objetivo.</div>
+ 
+    <div id="skills-matrix-root"></div>
+</div>
+
+</main>
+
+<footer>
+  TripleTen QA Bootcamp · roadmap.sh/qa · Análise de vagas LinkedIn PT · Ricardo · Out 2026<br>
+  Roadmap v5 — atualizado Out 2026 · datas reais S1–S9 · Progress tracker interativo · Design System v2
+</footer>
+
+</body>
+</html>
