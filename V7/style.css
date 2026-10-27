@@ -33,20 +33,20 @@
   --st-done: #00e5a0;
   --st-active: #f5b83d;
   --st-planned: #58a6ff;
-  --st-future: #8f92ad;
+  --st-future: #b48cff;
   --st-danger: #ff6b6b;
   --st-done-bg: rgba(0, 229, 160, 0.12);
   --st-active-bg: rgba(245, 184, 61, 0.14);
   --st-planned-bg: rgba(88, 166, 255, 0.14);
-  --st-future-bg: rgba(143, 146, 173, 0.14);
+  --st-future-bg: rgba(180, 140, 255, 0.14);
   --st-danger-bg: rgba(255, 107, 107, 0.12);
   --info-bg: rgba(169, 139, 224, 0.14);
 
-  /* Prioridade (uma família, P1 → P4) */
-  --pr-1: #ff5c8a;
-  --pr-2: #ff8fb0;
-  --pr-3: #f2b6c8;
-  --pr-4: #c4a7b2;
+  /* Prioridade (uma família rosa, do mais vivo ao mais apagado; P4 também tracejado) */
+  --pr-1: #ff4d7d;
+  --pr-2: #ff9bb5;
+  --pr-3: #ffd1dc;
+  --pr-4: #a8848f;
 
   /* Tipografia */
   --font-sans: 'Syne', system-ui, sans-serif;
@@ -204,7 +204,7 @@ main { padding: var(--sp-6) var(--sp-6) var(--sp-12); max-width: 1120px; margin:
 .prio-badge.prio-1 { color: var(--pr-1); border-color: var(--pr-1); }
 .prio-badge.prio-2 { color: var(--pr-2); border-color: var(--pr-2); }
 .prio-badge.prio-3 { color: var(--pr-3); border-color: var(--pr-3); }
-.prio-badge.prio-4 { color: var(--pr-4); border-color: var(--pr-4); }
+.prio-badge.prio-4 { color: var(--pr-4); border-color: var(--pr-4); border-style: dashed; }
 
 /* ── BUTTON / LINK (pill) ───────────────────────────────────── */
 .cert-link-btn {
@@ -226,7 +226,7 @@ a.cert-link-btn, a.cert-link-btn:visited { color: var(--text); text-decoration: 
 
 /* ── NOTE ───────────────────────────────────────────────────── */
 .note {
-  background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--accent2);
+  background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--muted);
   border-radius: var(--r-md); padding: var(--sp-3) var(--sp-4);
   font-size: var(--fs-sm); color: var(--muted); margin: var(--sp-3) 0;
 }
@@ -473,8 +473,13 @@ a.cert-link-btn, a.cert-link-btn:visited { color: var(--text); text-decoration: 
 .phase-done .phase-marker-dot { background: var(--st-done); border-color: var(--st-done); }
 .phase-done .phase-card { border-left-color: var(--st-done); }
 .phase-milestone .phase-card { border-left-color: var(--st-active); background: linear-gradient(90deg, var(--st-active-bg), var(--surface) 40%); }
-.phase-next .phase-marker-dot { background: var(--st-planned); border-color: var(--st-planned); }
-.phase-next .phase-card { border-left-color: var(--st-planned); }
+.phase-active .phase-marker-dot { background: var(--st-active); border-color: var(--st-active); }
+.phase-active .phase-card { border-left-color: var(--st-active); }
+.phase-planned .phase-marker-dot { background: var(--st-planned); border-color: var(--st-planned); }
+.phase-planned .phase-card { border-left-color: var(--st-planned); }
+.phase-future .phase-marker-dot { background: var(--st-future); border-color: var(--st-future); }
+.phase-num .prio-badge { margin-left: var(--sp-2); padding: 0 var(--sp-2); text-transform: none; letter-spacing: 0; }
+.priority-title .badge { vertical-align: middle; margin-left: var(--sp-2); font-weight: 400; }
 
 /* ── CERTIFICATIONS ─────────────────────────────────────────── */
 .cert-group { margin-bottom: var(--sp-6); }
@@ -534,11 +539,13 @@ a.cert-link-btn, a.cert-link-btn:visited { color: var(--text); text-decoration: 
   font-family: var(--font-mono); font-size: var(--fs-xs);
   border-radius: var(--r-pill); background: var(--surface2); border: 1px solid var(--border); color: var(--text);
 }
-.cert-tl-chip.tl-p1 { border-color: var(--pr-1); }
-.cert-tl-chip.tl-p2 { border-color: var(--pr-2); }
-.cert-tl-chip.tl-p3 { border-color: var(--pr-3); }
-.cert-tl-chip.tl-p4 { border-color: var(--pr-4); }
-.cert-tl-chip.is-milestone { font-weight: 700; background: rgba(255, 92, 138, 0.10); }
+.cert-tl-chip.tl-p1, .cert-tl-chip.tl-p2, .cert-tl-chip.tl-p3, .cert-tl-chip.tl-p4 { background: transparent; font-weight: 700; }
+/* Mesmo aspeto que os badges de prioridade (.prio-badge) */
+.cert-tl-chip.tl-p1 { color: var(--pr-1); border-color: var(--pr-1); }
+.cert-tl-chip.tl-p2 { color: var(--pr-2); border-color: var(--pr-2); }
+.cert-tl-chip.tl-p3 { color: var(--pr-3); border-color: var(--pr-3); }
+.cert-tl-chip.tl-p4 { color: var(--pr-4); border-color: var(--pr-4); border-style: dashed; }
+.cert-tl-chip.is-milestone { background: rgba(255, 77, 125, 0.12); }
 .cert-tl-chip.is-done { border-color: var(--st-done); color: var(--st-done); text-decoration: line-through; opacity: 0.75; }
 
 /* Legenda (estado vs prioridade) */
@@ -608,3 +615,28 @@ footer {
   .phase-timeline { padding-left: var(--sp-6); }
   .phase-marker { left: calc(-1 * var(--sp-6)); }
 }
+
+/* ── NÍVEIS DE CARREIRA (barra de progresso geral) ───────────── */
+.progress-bar-track.has-levels { position: relative; }
+.progress-bar-track.has-levels::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), var(--bg) calc(25% - 2px) 25%);
+}
+.level-row { margin-top: var(--sp-3); }
+.level-current { font-size: var(--fs-sm); color: var(--muted); margin-bottom: var(--sp-3); }
+.level-current strong { color: var(--text); }
+.level-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-2); }
+.level-step {
+  display: flex; flex-direction: column; gap: 2px; padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface2);
+}
+.level-step strong { font-size: var(--fs-sm); color: var(--muted); }
+.level-step small { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--muted); }
+.level-step.is-done strong { color: var(--st-done); }
+.level-step.is-current { border-color: var(--accent); background: var(--st-done-bg); }
+.level-step.is-current strong { color: var(--accent); }
+@media (max-width: 640px) { .level-steps { grid-template-columns: 1fr 1fr; } }
+
+/* Prioridade aberta a partir do Dashboard */
+.priority-block { scroll-margin-top: 64px; transition: border-color var(--t-base), box-shadow var(--t-base); }
+.priority-block.is-highlight { border-color: var(--accent); box-shadow: 0 0 0 2px var(--st-done-bg); }

@@ -22,7 +22,7 @@
   <button type="button" data-tab="timeline" onclick="showTab('timeline')">🗺 Career Timeline</button>
   <button type="button" data-tab="tracker" onclick="showTab('tracker')">✅ Career Tracker</button>
   <button type="button" data-tab="skills" onclick="showTab('skills')">📊 Skills Matrix</button>
-  <button type="button" data-tab="certs" onclick="showTab('certs')">🏅 Certifications</button>
+  <button type="button" data-tab="certs" onclick="showTab('certs')">🎓 Training Plan</button>
   <button type="button" data-tab="practice" onclick="showTab('practice')">🌐 Learning Hub</button>
   <button type="button" data-tab="pac-jobs" onclick="showTab('pac-jobs')">💼 PAC & Job Search</button>
 </nav>
@@ -46,7 +46,7 @@
             <div class="dash-card-sub">Bootcamp TripleTen concluído (Ago 2026) · PAC concluído (Out 2026) → candidaturas e entrevistas em curso</div>
             <div class="dash-stage-actions">
                 <a class="cert-link-btn" href="https://docs.google.com/spreadsheets/d/1CPKxxleHZq8KAqDd3qOivWGPxBGi1W4qZQZhaKneHo4/edit?usp=sharing" target="_blank" rel="noopener">📊 Tracker de candidaturas ↗</a>
-                <button type="button" class="cert-link-btn" onclick="showTab('certs')">🗓 Plano de formação</button>
+                <button type="button" class="cert-link-btn" onclick="showTab('certs')">🗓 Training Plan</button>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
             <div class="dash-card-label">Progresso</div>
 
             <div class="progress-bar-wrap">
-                <div class="progress-bar-track dash-progress-track" id="dash-progress-track"
+                <div class="progress-bar-track dash-progress-track has-levels" id="dash-progress-track"
                      role="slider" tabindex="0" aria-label="Progresso geral (arrasta ou clica para ajustar manualmente)"
                      aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar-fill" id="dash-progress-fill"></div>
@@ -67,6 +67,7 @@
                 <span class="progress-label" id="dash-progress-label">0 / 21 concluídos (0%)</span>
                 <span class="progress-mode mode-auto" id="dash-progress-mode">Automático</span>
             </div>
+            <div class="level-row" id="dash-level"></div>
 
             <button type="button" class="dash-progress-reset" id="dash-progress-reset" onclick="resetDashboardProgress()">↺ voltar ao automático</button>
         </div>
@@ -129,6 +130,9 @@
         <strong> O objetivo desta página </strong>
         <br>
         Esta secção documenta toda a evolução do bootcamp TripleTen. Cada Sprint contém aquilo que foi aprendido, o projeto realizado e os materiais produzidos. Esta página funciona como documentação técnica da minha aprendizagem ao longo do programa.
+    </div>
+    <div class="dash-stage-actions">
+        <a class="cert-link-btn" href="https://tripleten.com/home/qa-engineer/" target="_blank" rel="noopener">🎓 TripleTen QA Bootcamp ↗</a>
     </div>
 
     <div class="sec">Conteúdo dos Sprints</div>
@@ -638,6 +642,12 @@
 <div class="tab-content" id="tab-timeline">
 <div class="sec">Career Timeline</div>
 <div class="note">As 7 fases da minha evolução profissional, do bootcamp TripleTen à especialização de longo prazo em QA Automation. As fases 4 a 7 seguem as prioridades do Career Tracker e a Timeline de Formação da aba Certifications, e correm em paralelo com a procura de emprego.</div>
+  <div class="legend" aria-label="Legenda">
+    <span class="legend-group"><span class="legend-title">Estado</span>
+      <span class="badge badge--done">Concluído</span><span class="badge badge--active">Em curso</span><span class="badge badge--planned">Planeado</span><span class="badge badge--future">Futuro</span></span>
+    <span class="legend-group"><span class="legend-title">Prioridade</span>
+      <span class="prio-badge prio-1">P1</span><span class="prio-badge prio-2">P2</span><span class="prio-badge prio-3">P3</span><span class="prio-badge prio-4">P4</span></span>
+  </div>
 
   <div class="phase-timeline">
 
@@ -691,15 +701,15 @@
     </div>
 
     <!-- FASE 4 — CONSOLIDAÇÃO -->
-    <div class="phase-item phase-next">
+    <div class="phase-item phase-active">
       <div class="phase-marker"><span class="phase-marker-dot"></span></div>
       <div class="phase-card">
         <div class="phase-head">
-          <span class="phase-num">FASE 4</span>
-          <span class="phase-status status-next">A seguir · Nov 2026</span>
+          <span class="phase-num">FASE 4 <span class="prio-badge prio-1">P1</span></span>
+          <span class="phase-status status-active">Em curso</span>
         </div>
         <h3 class="phase-title">Consolidação</h3>
-        <div class="phase-date">Novembro 2026 → Janeiro 2027 · Prioridade 1</div>
+        <div class="phase-date">Novembro 2026 → Janeiro 2027</div>
         <ul class="phase-list">
           <li>ISTQB CTFL · exame em dezembro</li>
           <li>Python · CS50P</li>
@@ -710,15 +720,15 @@
     </div>
 
     <!-- FASE 5 — DIFERENCIAÇÃO -->
-    <div class="phase-item phase-future">
+    <div class="phase-item phase-planned">
       <div class="phase-marker"><span class="phase-marker-dot"></span></div>
       <div class="phase-card">
         <div class="phase-head">
-          <span class="phase-num">FASE 5</span>
-          <span class="phase-status status-future">Futuro</span>
+          <span class="phase-num">FASE 5 <span class="prio-badge prio-2">P2</span></span>
+          <span class="phase-status status-next">Planeado</span>
         </div>
         <h3 class="phase-title">Diferenciação</h3>
-        <div class="phase-date">Fevereiro → Maio 2027 · Prioridade 2</div>
+        <div class="phase-date">Fevereiro → Maio 2027</div>
         <ul class="phase-list">
           <li>Testes com Python e DevOps · TAU</li>
           <li>Playwright avançado</li>
@@ -736,11 +746,11 @@
       <div class="phase-marker"><span class="phase-marker-dot"></span></div>
       <div class="phase-card">
         <div class="phase-head">
-          <span class="phase-num">FASE 6</span>
+          <span class="phase-num">FASE 6 <span class="prio-badge prio-3">P3</span></span>
           <span class="phase-status status-future">Futuro</span>
         </div>
         <h3 class="phase-title">Especialização</h3>
-        <div class="phase-date">Junho → Dezembro 2027 · Prioridade 3</div>
+        <div class="phase-date">Junho → Dezembro 2027</div>
         <ul class="phase-list">
           <li>Jenkins e DevOps</li>
           <li>GitHub Actions (GH-200)</li>
@@ -755,11 +765,11 @@
       <div class="phase-marker"><span class="phase-marker-dot"></span></div>
       <div class="phase-card">
         <div class="phase-head">
-          <span class="phase-num">FASE 7</span>
-          <span class="phase-status status-future">Longo Prazo</span>
+          <span class="phase-num">FASE 7 <span class="prio-badge prio-4">P4</span></span>
+          <span class="phase-status status-future">Futuro</span>
         </div>
         <h3 class="phase-title">Longo Prazo</h3>
-        <div class="phase-date">2028 → · Prioridade 4</div>
+        <div class="phase-date">2028 →</div>
         <ul class="phase-list">
           <li>JavaScript + Cypress</li>
           <li>Java / C#</li>
@@ -779,14 +789,20 @@
 
 <div class="tab-content" id="tab-tracker">
   <div class="sec">Career Tracker</div>
-  <div class="note">Organizado por prioridade de evolução — clica nas competências à medida que as fores dominando. O progresso fica guardado automaticamente no browser. Verde = competência dominada; a cor rosa indica a prioridade.</div>
+  <div class="note">Organizado por prioridade de evolução — clica nas competências à medida que as fores dominando. O progresso fica guardado automaticamente no browser. Verde = competência dominada.</div>
+  <div class="legend" aria-label="Legenda">
+    <span class="legend-group"><span class="legend-title">Estado</span>
+      <span class="badge badge--done">Concluído</span><span class="badge badge--active">Em curso</span><span class="badge badge--planned">Planeado</span><span class="badge badge--future">Futuro</span></span>
+    <span class="legend-group"><span class="legend-title">Prioridade</span>
+      <span class="prio-badge prio-1">P1</span><span class="prio-badge prio-2">P2</span><span class="prio-badge prio-3">P3</span><span class="prio-badge prio-4">P4</span></span>
+  </div>
   <div id="career-tracker-root"></div>
 </div>
 
 <!-- ======== TAB: CERTIFICAÇÕES ======== -->
 <div class="tab-content" id="tab-certs">
-  <div class="sec">Certifications</div>
-  <div class="note">Plano de formação e certificações por prioridade (P1 → P3) e por mês, feito em pós-laboral e ao fim de semana. Preços Udemy em promoção (~12–14 €). Arrasta os cartões entre categorias para atualizar o estado.</div>
+  <div class="sec">Training Plan</div>
+  <div class="note">Plano de formação e certificações por prioridade (P1 → P3, as mesmas do Career Tracker e da Career Timeline) e por mês, feito em pós-laboral e ao fim de semana. Preços Udemy em promoção (~12–14 €). Arrasta os cartões entre categorias para atualizar o estado.</div>
   <div class="legend" aria-label="Legenda">
     <span class="legend-group"><span class="legend-title">Estado</span>
       <span class="badge badge--done">Concluído</span><span class="badge badge--active">Em curso</span><span class="badge badge--planned">Planeado</span><span class="badge badge--future">Futuro</span></span>
@@ -802,7 +818,7 @@
 <!-- ======== TAB: LEARNING HUB ======== -->
 <div class="tab-content" id="tab-practice">
   <div class="sec">🌐 Learning Hub</div>
-  <div class="note">Organizado por objetivo — onde aprender, onde praticar cada área, e onde procurar emprego. Cada plataforma tem prioridade e objetivo, para saberes sempre porque estás lá.</div>
+  <div class="note">Organizado por objetivo — onde aprender, onde praticar cada área, e onde procurar emprego. A prioridade segue o plano das Certifications: <strong>P1</strong> usar agora (Nov 2026 → Jan 2027), <strong>P2</strong> Fev → Mai 2027, <strong>P3</strong> mais tarde ou para consulta. Os canais de emprego não têm prioridade: usam-se todos em paralelo.</div>
   <div id="learning-hub-root"></div>
 </div>
 

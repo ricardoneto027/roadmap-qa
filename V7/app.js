@@ -66,6 +66,32 @@ function toggleSprint(header) {
 // ── DASHBOARD PROGRESS (hybrid: auto from tracker, manual override) ──
 const DASH_OVERRIDE_KEY = 'qa_roadmap_dashboard_override';
 
+// ── NÍVEIS DE CARREIRA (mesmos patamares da Skills Matrix: 25% · 50% · 75% · 100%) ──
+const CAREER_LEVELS = [
+  { name: 'Iniciante',  title: 'QA Trainee',             pct: 0 },
+  { name: 'Básico',     title: 'QA Júnior',              pct: 25 },
+  { name: 'Intermédio', title: 'QA Engineer',            pct: 50 },
+  { name: 'Avançado',   title: 'QA Automation Engineer', pct: 75 },
+  { name: 'Domínio',    title: 'Senior QA',              pct: 100 }
+];
+
+function renderLevelRow(el, done, total) {
+  if (!el || !total) return;
+  const need = CAREER_LEVELS.map(l => Math.ceil((l.pct / 100) * total));
+  let cur = 0;
+  need.forEach((n, i) => { if (done >= n) cur = i; });
+  const steps = CAREER_LEVELS.map((l, i) =>
+    '<span class="level-step' + (i < cur ? ' is-done' : '') + (i === cur ? ' is-current' : '') + '">'
+    + '<strong>' + (i < cur ? '✓ ' : '') + l.name + '</strong>'
+    + '<small>' + l.title + ' · ' + need[i] + '+</small></span>'
+  ).join('');
+  const next = cur < CAREER_LEVELS.length - 1
+    ? 'Faltam <strong>' + (need[cur + 1] - done) + '</strong> para ' + CAREER_LEVELS[cur + 1].name + ' (' + CAREER_LEVELS[cur + 1].title + ')'
+    : '🏆 Nível máximo atingido';
+  el.innerHTML = '<div class="level-current">Nível atual: <strong>' + CAREER_LEVELS[cur].name + ' · ' + CAREER_LEVELS[cur].title + '</strong> · ' + next + '</div>'
+    + '<div class="level-steps">' + steps + '</div>';
+}
+
 function computeAutoProgress() {
   const state = loadSkillsState();
   const allItems = CAREER_TRACKER_DATA.flatMap(flattenPriorityItems);
@@ -120,6 +146,7 @@ function renderDashboardProgress() {
   mode.classList.toggle('mode-auto', !isManual);
 
   if (resetBt) resetBt.style.display = isManual ? 'inline-block' : 'none';
+  renderLevelRow(document.getElementById('dash-level'), auto.done, auto.total);
   renderDashboardExtras();
 }
 
@@ -175,7 +202,7 @@ function initDashboardProgressControl() {
  */
 const CAREER_TRACKER_DATA = [
   {
-    id: 'p1', icon: '🔴', eyebrow: 'Prioridade 1 · Nov 2026 → Jan 2027 · Fase 4', title: 'Consolidar Fundamentos',
+    id: 'p1', icon: '🔴', status: 'active',  eyebrow: 'Prioridade 1 · Nov 2026 → Jan 2027 · Fase 4', title: 'Consolidar Fundamentos',
     mindset: 'Já aprendi isto. Agora quero dominar.',
     goal: 'ISTQB em dezembro, Python sólido com o CS50P e Playwright formalizado com o TAU, sem largar as bases de QA.',
     sections: [
@@ -304,7 +331,7 @@ const CAREER_TRACKER_DATA = [
     ]
   },
   {
-    id: 'p2', icon: '🟠', eyebrow: 'Prioridade 2 · Fev → Mai 2027 · Fase 5', title: 'Diferenciação',
+    id: 'p2', icon: '🟠', status: 'planned',  eyebrow: 'Prioridade 2 · Fev → Mai 2027 · Fase 5', title: 'Diferenciação',
     mindset: 'Quero destacar-me dos outros candidatos.',
     goal: 'Alargar o perfil: testes com Python, Katalon, performance, segurança, Azure DevOps e a primeira certificação GitHub.',
     sections: [
@@ -389,7 +416,7 @@ const CAREER_TRACKER_DATA = [
     ]
   },
   {
-    id: 'p3', icon: '🟢', eyebrow: 'Prioridade 3 · Jun → Dez 2027 · Fase 6', title: 'Especialização',
+    id: 'p3', icon: '🟢', status: 'future',  eyebrow: 'Prioridade 3 · Jun → Dez 2027 · Fase 6', title: 'Especialização',
     mindset: 'Quero tornar-me um Automation QA mais completo.',
     goal: 'Jenkins e GitHub Actions a fundo, Python mais avançado e, se fizer sentido, a cloud Azure.',
     sections: [
@@ -419,7 +446,7 @@ const CAREER_TRACKER_DATA = [
     ]
   },
   {
-    id: 'p4', icon: '🔵', eyebrow: 'Prioridade 4 · 2028 → · Fase 7', title: 'Longo Prazo',
+    id: 'p4', icon: '🔵', status: 'future',  eyebrow: 'Prioridade 4 · 2028 → · Fase 7', title: 'Longo Prazo',
     mindset: 'Quero preparar a evolução para um perfil mais sénior.',
     sections: [
       {
@@ -545,6 +572,12 @@ function priorityProgress(priority, state) {
   return { done, total, pct };
 }
 
+// Estado partilhado por Tracker, Timeline e Training Plan
+const STATUS_LABELS = { done: 'Concluído', active: 'Em curso', planned: 'Planeado', future: 'Futuro' };
+function statusBadge(status) {
+  return status ? '<span class="badge badge--' + status + '">' + STATUS_LABELS[status] + '</span>' : '';
+}
+
 function renderPriorityBlock(priority, state, openByDefault) {
   const { done, total, pct } = priorityProgress(priority, state);
   const sectionsHtml = priority.sections.map(s => renderSkillSection(s, state)).join('');
@@ -555,7 +588,7 @@ function renderPriorityBlock(priority, state, openByDefault) {
     +     '<span class="prio-badge prio-' + priority.id.slice(1) + '">' + priority.id.toUpperCase() + '</span>'
     +     '<div>'
     +       '<div class="priority-eyebrow">' + escapeHtml(priority.eyebrow) + '</div>'
-    +       '<div class="priority-title">' + escapeHtml(priority.title) + '</div>'
+    +       '<div class="priority-title">' + escapeHtml(priority.title) + ' ' + statusBadge(priority.status) + '</div>'
     +       '<div class="priority-mindset">"' + escapeHtml(priority.mindset) + '"</div>'
     +     '</div>'
     +   '</div>'
@@ -586,12 +619,12 @@ function renderCareerTracker() {
   const summary = '<div class="tracker-summary">'
     + '<div class="tracker-summary-label">Progresso Geral do Career Tracker</div>'
     + '<div class="progress-bar-wrap">'
-    +   '<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>'
+    +   '<div class="progress-bar-track has-levels"><div class="progress-bar-fill"></div></div>'
     +   '<span class="progress-label"></span>'
-    + '</div></div>';
+    + '</div><div class="level-row" id="tracker-level"></div></div>';
 
   root.innerHTML = summary + CAREER_TRACKER_DATA
-    .map((p, i) => renderPriorityBlock(p, state, i === 0))
+    .map(p => renderPriorityBlock(p, state, p.status === 'active')) // abre a prioridade em curso
     .join('');
 
   updateAllProgressBars(state);
@@ -619,6 +652,7 @@ function updateAllProgressBars(state) {
   const summaryLabel = document.querySelector('.tracker-summary .progress-label');
   if (summaryFill)  summaryFill.style.width = pctAll + '%';
   if (summaryLabel) summaryLabel.textContent = doneAll + ' / ' + totalAll + ' competências (' + pctAll + '%)';
+  renderLevelRow(document.getElementById('tracker-level'), doneAll, totalAll);
 }
 
 function toggleSkill(id) {
@@ -637,6 +671,22 @@ function toggleSkill(id) {
   updateAllProgressBars(state);
   renderDashboardProgress();
   renderSkillsMatrix(); // a Skills Matrix segue o Tracker
+}
+
+// Dashboard → Career Tracker: abre a prioridade escolhida e desce até ela
+function goToPriority(id) {
+  showTab('tracker');
+  const block = document.querySelector('.priority-block[data-priority-id="' + id + '"]');
+  if (!block) return;
+  block.classList.add('open');
+  // espera que o cabeçalho encolha (transição de 0.25s) antes de calcular a posição
+  setTimeout(() => {
+    const nav = document.querySelector('nav');
+    const offset = (nav ? nav.offsetHeight : 0) + 16;
+    window.scrollTo({ top: block.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    block.classList.add('is-highlight');
+    setTimeout(() => block.classList.remove('is-highlight'), 1500);
+  }, 300);
 }
 
 function initCareerTracker() {
@@ -682,7 +732,7 @@ const CERTIFICATIONS_DATA = [
     ]
   },
   {
-    id: 'em-preparacao', icon: '🎯', title: 'Em Preparação', color: 'amber',
+    id: 'em-preparacao', icon: '🎯', title: 'Em Curso', color: 'amber',
     items: [
       { id: 'cert-istqb', name: 'ISTQB Foundation Level (CTFL v4.0)', short: 'ISTQB CTFL',
         provider: 'PSTQB · exame em português', when: 'Estudo desde Ago 2026 · Exame: Dez 2026',
@@ -1015,155 +1065,174 @@ const LEARNING_HUB_DATA = [
   {
     id: 'aprender', icon: '📚', title: 'Aprender',
     items: [
-      { name: 'TripleTen', url: 'https://tripleten.com/', tag: 'Programa concluído',
-        desc: 'A plataforma do teu bootcamp — sprints, projetos e materiais para consulta.',
-        objetivo: 'Rever materiais e manter o acesso ao suporte de carreira.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+      { name: 'PSTQB — ISTQB Portugal', url: 'https://www.pstqb.pt/', tag: 'Exame pago · 196,80 €',
+        desc: 'Associação portuguesa do ISTQB: syllabus em português, exames remotos ou presenciais e inscrições.',
+        objetivo: 'Exame ISTQB CTFL em dezembro de 2026.',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'CS50P — Harvard', url: 'https://cs50.harvard.edu/python/', tag: 'Cert. grátis',
+        desc: 'Introdução à programação com Python: funções, exceptions, unit tests e POO, em 10 semanas.',
+        objetivo: 'Base de Python para automação (Nov 2026 → Jan 2027).',
+        priority: { tier: 1, label: '★★★ P1' } },
       { name: 'Test Automation University', url: 'https://testautomationu.applitools.com/', tag: 'Cert. grátis',
-        desc: 'Cursos gratuitos de Playwright, Cypress, Selenium, Appium, API testing e Pytest, com certificado por curso.',
-        objetivo: 'Aprofundar Playwright + Python e preparar Cypress.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
+        desc: 'Cursos gratuitos de automação (Playwright, Python, DevOps, API testing), com certificado por curso.',
+        objetivo: 'Playwright path (Dez–Jan), depois os paths de Python e DevOps (Fev 2027).',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'Udemy', url: 'https://www.udemy.com/', tag: 'Pago · ~12–14 € em promoção',
+        desc: 'Cursos do plano: ISTQB (Tarek Roshdy) e, do Rahul Shetty, Playwright, SQL + Security, Azure DevOps e DevOps.',
+        objetivo: 'Comprar só em promoção e um de cada vez, conforme a timeline das Certifications.',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'Katalon Academy', url: 'https://academy.katalon.com/', tag: 'Cert. grátis',
+        desc: 'Cursos e a certificação Katalon Practitioner, obtida por atividade no Katalon Studio.',
+        objetivo: 'Katalon Practitioner (Mar 2027).',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'BlazeMeter University', url: 'https://www.blazemeter.com/university', tag: 'Cert. grátis',
+        desc: 'Cursos gratuitos de performance testing: Apache JMeter Intro e Pro.',
+        objetivo: 'JMeter Intro (Mar 2027).',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'Microsoft Learn', url: 'https://learn.microsoft.com/pt-pt/training/github/', tag: 'Grátis · exames 76 €',
+        desc: 'Formação gratuita de GitHub (GH-900, GH-200), Azure DevOps e Azure Fundamentals.',
+        objetivo: 'GitHub Foundations (GH-900) em maio de 2027.',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'freeCodeCamp', url: 'https://www.freecodecamp.org/learn/python-v9/', tag: 'Cert. grátis',
+        desc: 'Python Certification: POO, estruturas de dados e algoritmos, com 5 projetos e exame.',
+        objetivo: 'Continuação do CS50P (2.º semestre de 2027).',
+        priority: { tier: 3, label: '★ P3' } },
+      { name: 'Tutorialspoint — Software Quality', url: 'https://www.tutorialspoint.com/software_quality_tutorials.htm', tag: 'Grátis · consulta',
+        desc: '47 tutoriais de qualidade de software: TestLink, QC, SoapUI, Bugzilla, Selenium, Cypress, Jenkins, Cucumber, Robot Framework, segurança e mobile.',
+        objetivo: 'Introdução rápida a uma ferramenta que aparece numa vaga e que ainda não conheces.',
+        priority: { tier: 3, label: '★ P3' } },
       { name: 'Atlassian University', url: 'https://university.atlassian.com', tag: 'Grátis',
-        desc: 'Badges de Jira, Confluence, Scrum e Kanban — as que já obtiveste.',
-        objetivo: 'Rever workflows e dashboards mais avançados de Jira.',
-        priority: { tier: 2, label: '★★ ALTA' } },
-      { name: 'Katalon Academy', url: 'https://academy.katalon.com/', tag: 'Grátis',
-        desc: 'Cursos e a certificação Katalon Practitioner.',
-        objetivo: 'Obter a certificação Katalon Practitioner (Fase 5).',
-        priority: { tier: 2, label: '★★ ALTA' } },
-      { name: 'Microsoft Learn', url: 'https://learn.microsoft.com/en-us/training/', tag: 'Grátis',
-        desc: 'Percursos de aprendizagem gratuitos para Azure DevOps e Azure Fundamentals (AZ-900).',
-        objetivo: 'Base para Azure DevOps e Cloud (Fase 5–7).',
-        priority: { tier: 3, label: '★ FUTURA' } }
+        desc: 'Onde obtiveste as badges de Jira, Confluence, Scrum e Kanban.',
+        objetivo: 'Aprofundar Jira (workflows, JQL, dashboards) quando precisares.',
+        priority: { tier: 3, label: '★ P3' } }
     ]
   },
   {
     id: 'qa-manual', icon: '🧪', title: 'Praticar QA Manual',
     items: [
       { name: 'SauceDemo', url: 'https://www.saucedemo.com/', tag: 'Grátis',
-        desc: 'App e-commerce feita para testes — login, produtos, carrinho, checkout.',
-        objetivo: 'Test cases, bug reports e base para automação com Playwright.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
-      { name: 'Practice Test Automation', url: 'https://practicetestautomation.com/', tag: 'Grátis',
-        desc: 'Site dedicado a exercícios de automação com cenários e soluções guiadas.',
-        objetivo: 'Praticar test design e primeiros scripts de automação.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
+        desc: 'Loja online feita para testes: login, produtos, carrinho e checkout, com utilizadores com problemas.',
+        objetivo: 'Test cases e bug reports, e base para scripts Playwright.',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'Practice Software Testing (Toolshop)', url: 'https://practicesoftwaretesting.com/', tag: 'Grátis',
+        desc: 'Loja de ferramentas criada para praticar testes, com interface web e API.',
+        objetivo: 'Aplicar as técnicas da ISTQB (EP, BVA, tabelas de decisão) num caso realista.',
+        priority: { tier: 1, label: '★★★ P1' } },
       { name: 'OrangeHRM Demo', url: 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login', tag: 'Grátis',
-        desc: 'Sistema de RH real — registo, login, gestão de empregados.',
+        desc: 'Sistema de RH real: login, gestão de empregados, permissões.',
         objetivo: 'Testes de formulários, validações e permissões de utilizador.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        priority: { tier: 2, label: '★★ P2' } },
       { name: 'Guru99', url: 'https://www.guru99.com/software-testing.html', tag: 'Grátis',
-        desc: 'Tutoriais extensos de QA Manual, SQL, Selenium e mais — bom para consulta rápida.',
-        objetivo: 'Consolidar teoria de Test Design Techniques e Risk Based Testing.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        desc: 'Tutoriais de teoria de testes, bons para consulta rápida.',
+        objetivo: 'Rever conceitos durante o estudo da ISTQB.',
+        priority: { tier: 2, label: '★★ P2' } },
       { name: 'OpenCart Demo', url: 'https://demo.opencart.com/', tag: 'Grátis',
-        desc: 'Loja online real, com área de utilizador e de administração.',
-        objetivo: 'Fluxos completos: registo, compra, gestão de produtos.',
-        priority: { tier: 3, label: '★ FUTURA' } }
+        desc: 'Loja online com área de cliente e de administração.',
+        objetivo: 'Fluxos completos: registo, compra e gestão de produtos.',
+        priority: { tier: 3, label: '★ P3' } }
     ]
   },
   {
     id: 'apis', icon: '🌐', title: 'Praticar APIs',
     items: [
-      { name: 'JSONPlaceholder', url: 'https://jsonplaceholder.typicode.com/', tag: 'Grátis',
-        desc: 'API fake de posts, comentários e utilizadores — GET, POST, PUT, DELETE.',
-        objetivo: 'Coleções Postman básicas com assertions.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
-      { name: 'Swagger Petstore', url: 'https://petstore.swagger.io/', tag: 'Grátis',
-        desc: 'API com documentação Swagger integrada — testa na UI ou via Postman.',
-        objetivo: 'Autenticação e CRUD completo.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
       { name: 'Restful Booker', url: 'https://restful-booker.herokuapp.com/apidoc/index.html', tag: 'Grátis',
-        desc: 'API completa de reservas com autenticação.',
-        objetivo: 'Coleção completa: auth, CRUD, testes negativos, assertions.',
-        priority: { tier: 2, label: '★★ ALTA' } },
-      { name: 'ReqRes', url: 'https://reqres.in/', tag: 'Grátis',
-        desc: 'API de teste com respostas realistas e paginação.',
-        objetivo: 'Praticar variáveis, collections e testes automatizados no Postman.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        desc: 'API de reservas com autenticação por token, CRUD completo e bugs propositados.',
+        objetivo: 'Authentication, tokens, testes negativos e validação de schema.',
+        priority: { tier: 1, label: '★★★ P1' } },
       { name: 'Postman Echo', url: 'https://postman-echo.com/', tag: 'Grátis',
-        desc: 'Serviço oficial da Postman para testar requests, headers e autenticação.',
-        objetivo: 'Explorar Authentication e Tokens na prática.',
-        priority: { tier: 2, label: '★★ ALTA' } }
+        desc: 'Serviço da Postman que devolve o pedido: headers, auth, cookies, status codes.',
+        objetivo: 'Perceber status codes e tipos de autenticação na prática.',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'Swagger Petstore', url: 'https://petstore.swagger.io/', tag: 'Grátis',
+        desc: 'API de exemplo com documentação Swagger (OpenAPI) integrada.',
+        objetivo: 'Ler documentação OpenAPI e testar a partir dela.',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'JSONPlaceholder', url: 'https://jsonplaceholder.typicode.com/', tag: 'Grátis',
+        desc: 'API fake de posts, comentários e utilizadores: GET, POST, PUT, DELETE.',
+        objetivo: 'Aquecimento rápido de Postman (já dominas o básico).',
+        priority: { tier: 3, label: '★ P3' } },
+      { name: 'ReqRes', url: 'https://reqres.in/', tag: 'Grátis · conta opcional',
+        desc: 'API de teste com respostas realistas e paginação. Sem conta funciona com limite por IP.',
+        objetivo: 'Variáveis e paginação em coleções Postman.',
+        priority: { tier: 3, label: '★ P3' } }
     ]
   },
   {
     id: 'sql', icon: '🗄️', title: 'Praticar SQL',
     items: [
-      { name: 'SQLBolt', url: 'https://sqlbolt.com/', tag: 'Grátis',
-        desc: 'Tutorial visual e interativo — o ponto de partida mais simples.',
-        objetivo: 'Consolidar SELECT, WHERE, JOINs básicos.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
       { name: 'SQLZoo', url: 'https://sqlzoo.net/wiki/SQL_Tutorial', tag: 'Grátis',
         desc: 'Exercícios interativos no browser, sem instalação.',
-        objetivo: 'JOINs, subqueries e agregações mais complexas.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
+        objetivo: 'JOINs complexos, subqueries e agregações (Abr 2027, com o curso de SQL).',
+        priority: { tier: 2, label: '★★ P2' } },
       { name: 'HackerRank SQL', url: 'https://www.hackerrank.com/domains/sql', tag: 'Grátis',
-        desc: 'Desafios de SQL com níveis de dificuldade crescente.',
+        desc: 'Desafios de SQL com dificuldade crescente.',
         objetivo: 'HAVING, CASE e queries mais realistas.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'SQLBolt', url: 'https://sqlbolt.com/', tag: 'Grátis',
+        desc: 'Tutorial visual e interativo, o mais simples para rever.',
+        objetivo: 'Revisão rápida de SELECT, WHERE e JOINs antes de entrevistas.',
+        priority: { tier: 3, label: '★ P3' } },
       { name: 'LeetCode SQL', url: 'https://leetcode.com/problemset/database/', tag: 'Grátis',
         desc: 'Problemas de base de dados usados em entrevistas técnicas.',
         objetivo: 'Window Functions e preparação para entrevistas.',
-        priority: { tier: 3, label: '★ FUTURA' } }
+        priority: { tier: 3, label: '★ P3' } }
     ]
   },
   {
     id: 'python-auto', icon: '🤖', title: 'Praticar Python & Automação',
     items: [
-      { name: 'The Internet (Herokuapp)', url: 'https://the-internet.herokuapp.com/', tag: 'Grátis',
-        desc: 'Coleção de challenges de automação: login, alerts, drag-and-drop, iframes, shadow DOM.',
-        objetivo: 'Praticar esperas, locators e debugging em cenários variados.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
       { name: 'Playwright Docs (Python)', url: 'https://playwright.dev/python/', tag: 'Grátis',
-        desc: 'Documentação oficial do Playwright para Python — locators, auto-waiting, fixtures e trace viewer.',
+        desc: 'Documentação oficial: locators, auto-waiting, fixtures e trace viewer.',
         objetivo: 'Organização, reutilização e estrutura dos testes (POM, fixtures, parametrização).',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
-      { name: 'Selenium Playground', url: 'https://seleniumplayground.netlify.app/', tag: 'Grátis',
-        desc: 'Site dedicado à prática de scraping e interação com Selenium.',
-        objetivo: 'Reutilização, estrutura e organização de scripts.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
-      { name: 'Exercism', url: 'https://exercism.org/', tag: 'Grátis',
-        desc: 'Exercícios de Python com mentor humano gratuito.',
-        objetivo: 'Funções, classes, exceptions, list comprehensions.',
-        priority: { tier: 2, label: '★★ ALTA' } },
-      { name: 'HackerRank Python', url: 'https://www.hackerrank.com/domains/python', tag: 'Grátis',
-        desc: 'Desafios de Python organizados por tópico e dificuldade.',
-        objetivo: 'Consolidar fundamentos antes de escalar para frameworks novos.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'The Internet (Herokuapp)', url: 'https://the-internet.herokuapp.com/', tag: 'Grátis',
+        desc: 'Challenges de automação: login, alerts, drag-and-drop, iframes, shadow DOM.',
+        objetivo: 'Esperas, locators e debugging em cenários variados.',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'UI Testing Playground', url: 'http://uitestingplayground.com/', tag: 'Grátis',
+        desc: 'Exemplos dos problemas reais da automação: IDs dinâmicos, AJAX, camadas escondidas, frames.',
+        objetivo: 'Perceber quando o auto-waiting do Playwright chega e quando não.',
+        priority: { tier: 1, label: '★★★ P1' } },
+      { name: 'Automation Exercise', url: 'https://www.automationexercise.com/', tag: 'Grátis',
+        desc: 'Loja online para automação com lista de test cases e de APIs prontos a usar.',
+        objetivo: 'Projeto Playwright novo para o portfolio, com UI e API.',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'Practice Test Automation', url: 'https://practicetestautomation.com/practice/', tag: 'Grátis',
+        desc: 'Páginas de prática com cenários guiados (login, exceções, tabelas).',
+        objetivo: 'Exercícios curtos de automação entre módulos do TAU.',
+        priority: { tier: 2, label: '★★ P2' } },
+      { name: 'Exercism (Python)', url: 'https://exercism.org/tracks/python', tag: 'Grátis',
+        desc: 'Exercícios de Python com feedback de mentores voluntários.',
+        objetivo: 'Praticar o que aprendes no CS50P.',
+        priority: { tier: 2, label: '★★ P2' } },
       { name: 'Codewars', url: 'https://www.codewars.com/', tag: 'Grátis',
-        desc: 'Kata de programação com comunidade ativa e várias linguagens.',
-        objetivo: 'Manter prática regular de lógica e Python geral.',
-        priority: { tier: 3, label: '★ FUTURA' } }
+        desc: 'Desafios curtos (kata) de lógica em várias linguagens.',
+        objetivo: 'Manter a lógica de programação em dia.',
+        priority: { tier: 3, label: '★ P3' } }
     ]
   },
   {
+    // Emprego: sem prioridades — são canais a usar em paralelo
     id: 'emprego', icon: '💼', title: 'Emprego',
     items: [
       { name: 'Tracker de Candidaturas', url: 'https://docs.google.com/spreadsheets/d/1CPKxxleHZq8KAqDd3qOivWGPxBGi1W4qZQZhaKneHo4/edit?usp=sharing', tag: 'Google Sheets',
         desc: 'O registo de todas as candidaturas: data, empresa, cargo, estado e resposta.',
-        objetivo: 'Registar cada candidatura e acompanhar respostas e entrevistas (Fase 3).',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
-      { name: 'PAC — TripleTen', url: 'https://tripleten.com/', tag: 'Programa concluído',
-        desc: 'Career Acceleration Program concluído — coach dedicado, candidaturas e mock interviews.',
-        objetivo: 'Reaproveitar as tarefas do PAC e manter contacto com o coach durante a procura.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        objetivo: 'Registar cada candidatura e acompanhar respostas e entrevistas.' },
       { name: 'LinkedIn Jobs', url: 'https://www.linkedin.com/jobs/', tag: 'Grátis',
         desc: 'A rede mais usada para recrutamento tech em Portugal.',
-        objetivo: 'Candidaturas + networking com QAs portugueses.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
+        objetivo: 'Candidaturas, alertas de vagas e networking com recrutadores e QAs.' },
       { name: 'Landing.Jobs', url: 'https://landing.jobs/', tag: 'Grátis',
-        desc: 'A maior plataforma de emprego tech em Portugal.',
-        objetivo: 'Vagas QA locais e remotas.',
-        priority: { tier: 1, label: '★★★ MÁXIMA' } },
+        desc: 'Job board europeu de tecnologia com escritório em Lisboa.',
+        objetivo: 'Vagas QA locais e remotas.' },
       { name: 'ITJobs', url: 'https://www.itjobs.pt/', tag: 'Grátis',
         desc: 'Job board português especializado em TI.',
-        objetivo: 'Vagas QA/TI adicionais fora do LinkedIn.',
-        priority: { tier: 2, label: '★★ ALTA' } },
+        objetivo: 'Vagas QA e TI fora do LinkedIn, muitas de consultoras.' },
       { name: 'Indeed Portugal', url: 'https://pt.indeed.com/', tag: 'Grátis',
         desc: 'Agregador generalista com grande volume de vagas.',
-        objetivo: 'Alertas automáticos para novas vagas QA.',
-        priority: { tier: 2, label: '★★ ALTA' } }
+        objetivo: 'Alertas automáticos para novas vagas QA.' },
+      { name: 'PAC — TripleTen', url: 'https://tripleten.com/', tag: 'Programa concluído',
+        desc: 'Career Acceleration Program concluído: coach, candidaturas e mock interviews.',
+        objetivo: 'Reaproveitar as tarefas do PAC e manter contacto com o coach durante a procura.' }
     ]
   }
 ];
@@ -1395,7 +1464,7 @@ function renderDashPriorities() {
     const pr = priorityProgress(p, state);
     const period = (p.eyebrow.split(' · ')[1]) || '';
     const n = p.id.slice(1);
-    return '<button type="button" class="dash-prio prio-' + n + '" onclick="showTab(\'tracker\')">'
+    return '<button type="button" class="dash-prio prio-' + n + '" onclick="goToPriority(\'' + p.id + '\')" title="Abrir ' + escapeHtml(p.title) + ' no Career Tracker">'
       + '<span class="prio-badge prio-' + n + '">P' + n + '</span>'
       + '<span class="dash-prio-name">' + escapeHtml(p.title) + '</span>'
       + '<span class="dash-prio-period">' + escapeHtml(period) + '</span>'
