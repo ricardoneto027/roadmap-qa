@@ -735,7 +735,7 @@ const CERTIFICATIONS_DATA = [
     id: 'em-preparacao', icon: '🎯', title: 'Em Curso', color: 'amber',
     items: [
       { id: 'cert-istqb', name: 'ISTQB Foundation Level (CTFL v4.0)', short: 'ISTQB CTFL',
-        provider: 'PSTQB · exame em português', when: 'Estudo desde Ago 2026 · Exame: Dez 2026',
+        provider: 'PSTQB · exame em português', when: 'Estudo: Nov → Dez 2026 · Exame: Dez 2026',
         cost: '196,80 € (exame) + ~13 € (curso Udemy)', priority: { tier: 1, label: '★★★ P1' },
         credential: 'Certificação ISTQB oficial (sem validade)',
         months: ['2026-11', '2026-12'], milestone: { month: '2026-12', label: '🎯 exame' },
@@ -750,10 +750,10 @@ const CERTIFICATIONS_DATA = [
         hint: 'Base de Python para automação: funções, exceptions, unit tests e POO com classes.',
         official: { url: 'https://cs50.harvard.edu/python/', label: 'cs50.harvard.edu/python' } },
       { id: 'cert-tau-playwright', name: 'TAU — Playwright Learning Path', short: 'TAU Playwright',
-        provider: 'Test Automation University (Applitools)', when: 'Dez 2026 → Jan 2027 (depois do exame ISTQB)',
+        provider: 'Test Automation University (Applitools)', when: 'Nov 2026 · fim-de-semana de 7 e 8 nov',
         cost: 'Grátis', priority: { tier: 1, label: '★★★ P1' },
         credential: 'Certificado de conclusão por curso',
-        months: ['2026-12', '2027-01'],
+        months: ['2026-11'],
         hint: 'Reforça e formaliza o que já fizeste no PetClinic com Playwright + Python.',
         official: { url: 'https://testautomationu.applitools.com/learningpaths.html?id=playwright-path', label: 'Playwright path' } }
     ]
