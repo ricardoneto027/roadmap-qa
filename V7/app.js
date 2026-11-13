@@ -750,7 +750,7 @@ const CERTIFICATIONS_DATA = [
         hint: 'Base de Python para automação: funções, exceptions, unit tests e POO com classes.',
         official: { url: 'https://cs50.harvard.edu/python/', label: 'cs50.harvard.edu/python' } },
       { id: 'cert-tau-playwright', name: 'TAU — Playwright Learning Path', short: 'TAU Playwright',
-        provider: 'Test Automation University (Applitools)', when: 'Nov 2026 · fim-de-semana de 7 e 8 nov',
+        provider: 'Test Automation University (Applitools)', when: 'Nov 2026 · fim-de-semana de 14 e 15 nov',
         cost: 'Grátis', priority: { tier: 1, label: '★★★ P1' },
         credential: 'Certificado de conclusão por curso',
         months: ['2026-11'],
