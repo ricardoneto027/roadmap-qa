@@ -1215,9 +1215,6 @@ const LEARNING_HUB_DATA = [
     // Emprego: sem prioridades — são canais a usar em paralelo
     id: 'emprego', icon: '💼', title: 'Emprego',
     items: [
-      { name: 'Tracker de Candidaturas', url: 'https://docs.google.com/spreadsheets/d/1CPKxxleHZq8KAqDd3qOivWGPxBGi1W4qZQZhaKneHo4/edit?usp=sharing', tag: 'Google Sheets',
-        desc: 'O registo de todas as candidaturas: data, empresa, cargo, estado e resposta.',
-        objetivo: 'Registar cada candidatura e acompanhar respostas e entrevistas.' },
       { name: 'LinkedIn Jobs', url: 'https://www.linkedin.com/jobs/', tag: 'Grátis',
         desc: 'A rede mais usada para recrutamento tech em Portugal.',
         objetivo: 'Candidaturas, alertas de vagas e networking com recrutadores e QAs.' },
